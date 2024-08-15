@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_app
+    volumes:
+      - ./html:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: "bdpresupuesto"
+      MYSQL_USER_DATABASE: "presudev"
+      MYSQL_USER_PASSWORD: "21129986"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  tomcat:
+    image: tomcat:9.0
+    container_name: tomcat_app
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
+
+volumes:
+  db_data:
