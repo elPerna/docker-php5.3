@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.7'
 
 services:
   php:
@@ -7,30 +7,30 @@ services:
       dockerfile: Dockerfile
     container_name: php_app
     volumes:
-      - ./html:/var/www/html
+      - ./php:/var/www/html
     ports:
-      - "80:80"
-    depends_on:
-      - mysql
+      - "8080:80"
 
-  mysql:
-    image: mysql:5.7
-    container_name: mysql_db
+  mariadb:
+    image: mariadb:10.5  # Cambia la imagen a MariaDB
+    container_name: mariadb_db  # Cambia el nombre del contenedor
     environment:
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_DATABASE: "bdpresupuesto"
-      MYSQL_USER_DATABASE: "presudev"
-      MYSQL_USER_PASSWORD: "21129986"
+      MYSQL_ROOT_PASSWORD: alciribarren
+      MYSQL_DATABASE: bdpresupuesto
+      MYSQL_USER: presudev
+      MYSQL_PASSWORD: presudev2024
+    ports:
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
   tomcat:
     image: tomcat:9.0
     container_name: tomcat_app
     ports:
-      - "9090:9090"
+      - "8081:8080"
     volumes:
-      - ./webapps:/usr/local/tomcat/webapps
+      - ./tomcat/webapps:/usr/local/tomcat/webapps
 
 volumes:
-  db_data:
+  mysql_data:
